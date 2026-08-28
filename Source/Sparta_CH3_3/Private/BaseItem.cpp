@@ -46,11 +46,9 @@ void ABaseItem::OnItemEndOverlap(UPrimitiveComponent* OverlappedComp,
 
 void ABaseItem::ActivateItem(AActor* Activator)
 {
-	UParticleSystemComponent* Particle = nullptr;
-
 	if (PickupParticle)
 	{
-		Particle = UGameplayStatics::SpawnEmitterAtLocation(
+		UGameplayStatics::SpawnEmitterAtLocation(
 			GetWorld(),
 			PickupParticle,
 			GetActorLocation(),
@@ -67,21 +65,6 @@ void ABaseItem::ActivateItem(AActor* Activator)
 			GetActorLocation()
 		);
 	}
-
-	if (Particle)
-	{
-		FTimerHandle DestroyParticleTimerHandle;
-
-		GetWorldTimerManager().SetTimer(
-			DestroyParticleTimerHandle,
-			[Particle]()
-			{
-				Particle->DestroyComponent();
-			},
-			2.0f,
-			false
-		);
-	}
 }
 
 FName ABaseItem::GetItemType() const
@@ -92,4 +75,9 @@ FName ABaseItem::GetItemType() const
 void ABaseItem::DestroyItem()
 {
 	Destroy();
+}
+
+void ABaseItem::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
 }

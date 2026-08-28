@@ -1,4 +1,5 @@
 ﻿#include "SpawnVolume.h"
+#include "SpartaGameState.h"
 #include "Components/BoxComponent.h"
 
 ASpawnVolume::ASpawnVolume()

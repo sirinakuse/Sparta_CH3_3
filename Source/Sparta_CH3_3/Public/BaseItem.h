@@ -25,11 +25,11 @@ protected:
 	USphereComponent* Collision;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Itme|Component")
 	UStaticMeshComponent* StaticMesh;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Itme|Effects")
 	UParticleSystem* PickupParticle;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Itme|Effects")
 	USoundBase* PickupSound;
+	FTimerHandle DestroyParticleTimerHandle;
 
 	virtual void OnItemOverlap(UPrimitiveComponent* OverlappedComp,
 		AActor* OtherActor,
@@ -45,5 +45,6 @@ protected:
 	virtual FName GetItemType() const override;
 
 	virtual void DestroyItem();
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason);
 
 };

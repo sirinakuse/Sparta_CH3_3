@@ -14,7 +14,7 @@ AMineItem::AMineItem()
 
 	ExplosionCollision = CreateDefaultSubobject<USphereComponent>(TEXT("ExplosionCollision"));
 	ExplosionCollision->InitSphereRadius(ExplosionRadius);
-	ExplosionCollision->SetCollisionProfileName(TEXT("OverlapAllDanymic"));
+	ExplosionCollision->SetCollisionProfileName(TEXT("OverlapAllDynamic"));
 	ExplosionCollision->SetupAttachment(Scene);
 }
 
@@ -37,18 +37,23 @@ void AMineItem::ActivateItem(AActor* Activator)
 	bHasExploded = true;
 }
 
+void AMineItem::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	GetWorldTimerManager().ClearTimer(ExplosionTimerHandle);
+
+	Super::EndPlay(EndPlayReason);
+}
+
 void AMineItem::Explode()
 {
-	UParticleSystemComponent* Particle = nullptr;
-
 	if (ExplosionParticle)
 	{
-		Particle = UGameplayStatics::SpawnEmitterAtLocation(
+		UGameplayStatics::SpawnEmitterAtLocation(
 			GetWorld(),
 			ExplosionParticle,
 			GetActorLocation(),
 			GetActorRotation(),
-			false
+			true
 		);
 	}
 
@@ -79,19 +84,4 @@ void AMineItem::Explode()
 	}
 
 	DestroyItem();
-
-	if (Particle)
-	{
-		FTimerHandle DestroyParticleTimerHandle;
-
-		GetWorldTimerManager().SetTimer(
-			DestroyParticleTimerHandle,
-			[Particle]()
-			{
-				Particle->DestroyComponent();
-			},
-			5.0f,
-			false
-		);
-	}
 }

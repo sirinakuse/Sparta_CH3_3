@@ -14,9 +14,9 @@ public:
 
 	USphereComponent* ExplosionCollision;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Itme|Effects")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Effects")
 	UParticleSystem* ExplosionParticle;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Itme|Effects")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Effects")
 	USoundBase* ExplosionSound;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
@@ -30,6 +30,7 @@ public:
 	FTimerHandle ExplosionTimerHandle;
 
 	virtual void ActivateItem(AActor* Activator) override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
 	void Explode();
 };
