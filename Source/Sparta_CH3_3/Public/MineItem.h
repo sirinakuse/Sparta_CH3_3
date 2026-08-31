@@ -18,6 +18,8 @@ public:
 	UParticleSystem* ExplosionParticle;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Effects")
 	USoundBase* ExplosionSound;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Effects")
+	UMaterialInstanceDynamic* DynamicMaterial;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 	float ExplosionDelay;
