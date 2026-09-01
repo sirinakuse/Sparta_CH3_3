@@ -18,8 +18,10 @@ public:
 	UParticleSystem* ExplosionParticle;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Effects")
 	USoundBase* ExplosionSound;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Effects")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Item|Effects")
 	UMaterialInstanceDynamic* DynamicMaterial;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Materials")
+	FLinearColor BaseGlowColor;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 	float ExplosionDelay;
@@ -32,6 +34,8 @@ public:
 	FTimerHandle ExplosionTimerHandle;
 
 	virtual void ActivateItem(AActor* Activator) override;
+	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
 	void Explode();

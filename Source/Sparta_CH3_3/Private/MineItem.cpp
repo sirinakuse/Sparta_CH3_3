@@ -6,6 +6,9 @@
 AMineItem::AMineItem()
 {
 
+	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bStartWithTickEnabled = false;
+
 	ExplosionDelay = 5.0f;
 	ExplosionRadius = 300.0f;
 	ExplosionDamage = 30;
@@ -33,8 +36,31 @@ void AMineItem::ActivateItem(AActor* Activator)
 			ExplosionDelay,//시간
 			false//반복여부
 		);
+		SetActorTickEnabled(true);
 	}
 	bHasExploded = true;
+}
+
+void AMineItem::BeginPlay()
+{
+	Super::BeginPlay();
+
+	DynamicMaterial = StaticMesh->CreateDynamicMaterialInstance(0);
+}
+
+void AMineItem::Tick(float DeltaTime)
+{
+	float RemainingTime = GetWorldTimerManager().GetTimerRemaining(ExplosionTimerHandle);
+	RemainingTime = FMath::Max(RemainingTime, 0.0f);
+
+	float BlinkSpeed =10.0f / RemainingTime;
+	float SinValue = FMath::Sin(GetWorld()->GetTimeSeconds() * BlinkSpeed);
+	float GlowIntensity = (SinValue + 1.0f) * 0.5f;
+
+	if (DynamicMaterial)
+	{
+		DynamicMaterial->SetVectorParameterValue(TEXT("PulseColor"), BaseGlowColor * GlowIntensity);
+	}
 }
 
 void AMineItem::EndPlay(const EEndPlayReason::Type EndPlayReason)
